@@ -1,8 +1,11 @@
+use dotenv_codegen::dotenv;
 use gloo_net::http::Request;
 use serde::Deserialize;
 use std::time::SystemTime;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
+
+const API_URL: &str = dotenv!("API_URL");
 
 #[derive(Deserialize)]
 struct Response {
@@ -38,7 +41,7 @@ fn record_list(RecordListProps { records, on_click }: &RecordListProps) -> Html 
                     }
                     style="cursor: pointer;"
                 >
-                    {format!("http://127.0.0.1:8000/{}", record.id)}
+                    {format!("{}/{}", API_URL, record.id)}
                 </p>
             }
         })
@@ -55,7 +58,8 @@ pub fn app() -> Html {
             move |_| {
                 let records = records.clone();
                 spawn_local(async move {
-                    let res: Response = Request::get("http://127.0.0.1:8000/api/records")
+                    let url = format!("{}/api/records", API_URL);
+                    let res: Response = Request::get(&url)
                         .send()
                         .await
                         .unwrap()
