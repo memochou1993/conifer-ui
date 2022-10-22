@@ -1,7 +1,7 @@
+use chrono::{DateTime, Utc};
 use dotenv_codegen::dotenv;
 use gloo_net::http::Request;
 use serde::Deserialize;
-use std::time::SystemTime;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 
@@ -16,9 +16,9 @@ struct Response {
 struct Record {
     id: String,
     url: String,
-    expired_at: SystemTime,
-    updated_at: SystemTime,
-    created_at: SystemTime,
+    expired_at: DateTime<Utc>,
+    created_at: DateTime<Utc>,
+    updated_at: DateTime<Utc>,
 }
 
 #[derive(PartialEq, Properties)]
