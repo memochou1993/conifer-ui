@@ -26,7 +26,7 @@ pub fn app() -> Html {
         );
     }
 
-    let on_record_click = {
+    let redirect = {
         Callback::from(move |record| {
             log::info!("{:#?}", record);
         })
@@ -36,7 +36,7 @@ pub fn app() -> Html {
         <div>
             <RecordList
                 records={(*records).clone()}
-                on_click={on_record_click}
+                on_click={redirect}
             />
         </div>
     }
