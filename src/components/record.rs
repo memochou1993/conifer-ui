@@ -13,10 +13,15 @@ pub fn record_list(RecordListProps { records, on_click }: &RecordListProps) -> H
         .iter()
         .map(|record| {
             html! {
-                <RecordItem
-                    record={record.clone()}
-                    on_click={on_click}
-                />
+                <>
+                    <h1 class="text-xl font-bold underline">
+                        {"Hello world!"}
+                    </h1>
+                    <RecordItem
+                        record={record.clone()}
+                        on_click={on_click}
+                    />
+                </>
             }
         })
         .collect()
