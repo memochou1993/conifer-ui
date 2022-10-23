@@ -1,4 +1,4 @@
-use crate::components::record::RecordList;
+use crate::components::record::{RecordForm, RecordList};
 use dotenv_codegen::dotenv;
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
@@ -33,29 +33,21 @@ pub fn app() -> Html {
     };
 
     html! {
-        <div class="h-screen flex items-center bg-slate-800 text-white">
+        <div class="h-screen flex items-center bg-slate-800 text-white font-light">
             <div class="container mx-auto">
-                <div class="flex justify-center">
-                    <figure class="basis-8/12 my-4 px-2 py-4 text-center bg-slate-200 text-slate-800 rounded-md">
-                        <div class="flex">
-                            <div class="basis-9/12 px-2">
-                                <input id="input" type="text" class="w-full p-4 bg-white text-slate-800 shadow-md rounded-md outline-none" />
-                            </div>
-                            <div class="basis-3/12 px-2">
-                                <button class="w-full p-4 bg-slate-800 text-white shadow-md rounded-md">
-                                    {"Shorten"}
-                                </button>
-                            </div>
-                        </div>
-                    </figure>
+                <div class="flex justify-center my-8">
+                    <p class="text-4xl">
+                        {"URL Shortener"}
+                    </p>
                 </div>
-                <div class="flex justify-center">
-                    <figure class="basis-8/12 my-4 px-2 py-4 text-center bg-slate-200 text-slate-800 rounded-md">
-                        <RecordList
-                            records={(*records).clone()}
-                            on_click={redirect}
-                        />
-                    </figure>
+                <div class="flex justify-center my-8">
+                    <RecordForm />
+                </div>
+                <div class="flex justify-center my-8">
+                    <RecordList
+                        records={(*records).clone()}
+                        on_click={redirect}
+                    />
                 </div>
             </div>
         </div>
