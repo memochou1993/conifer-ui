@@ -21,7 +21,7 @@ pub fn record_form(RecordFormProps { on_submit }: &RecordFormProps) -> Html {
                             let record = Record::new(String::from("http://localhost")); // FIXME
                             Callback::from(move |_| (on_submit).emit(record.clone()))
                         }
-                        class="w-full p-4 bg-slate-800 text-white shadow-md rounded-md">
+                        class="w-full p-4 bg-blue-600 active:bg-blue-800 text-white shadow-md rounded-md">
                         {"Shorten"}
                     </button>
                 </div>
