@@ -12,13 +12,18 @@ const API_URL: &str = dotenv!("API_URL");
 pub fn app() -> Html {
     let records = use_state(|| vec![]);
 
+    let local_storage = web_sys::window().unwrap().local_storage().unwrap().unwrap();
+
     {
         let records = records.clone();
         use_effect_with_deps(
             move |_| {
                 spawn_local(async move {
-                    let res = service::fetch_records().await;
-                    records.set(res.data);
+                    let data = local_storage.get_item("records").unwrap();
+                    if let Some(data) = data {
+                        let value = serde_json::from_str(&data).unwrap();
+                        records.set(value);
+                    }
                 });
                 || ()
             },
@@ -26,9 +31,18 @@ pub fn app() -> Html {
         );
     }
 
+    let submit = {
+        Callback::from(move |record| {
+            spawn_local(async move {
+                let res = service::store_record(&record).await;
+                log::info!("{:#?}", res.data); // TODO
+            });
+        })
+    };
+
     let redirect = {
         Callback::from(move |record| {
-            log::info!("{:#?}", record);
+            log::info!("{:#?}", record); // TODO
         })
     };
 
@@ -41,7 +55,9 @@ pub fn app() -> Html {
                     </p>
                 </div>
                 <div class="flex justify-center my-8">
-                    <RecordForm />
+                    <RecordForm
+                        on_submit={submit}
+                    />
                 </div>
                 <div class="flex justify-center my-8">
                     <RecordList

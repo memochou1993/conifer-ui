@@ -1,8 +1,13 @@
 use crate::{service::Record, API_URL};
 use yew::prelude::*;
 
+#[derive(PartialEq, Properties)]
+pub struct RecordFormProps {
+    pub on_submit: Callback<Record>,
+}
+
 #[function_component(RecordForm)]
-pub fn record_form() -> Html {
+pub fn record_form(RecordFormProps { on_submit }: &RecordFormProps) -> Html {
     html! {
         <figure class="basis-8/12 p-4 bg-slate-200 text-slate-800 rounded-md">
             <div class="flex">
@@ -10,7 +15,13 @@ pub fn record_form() -> Html {
                     <input id="input" type="text" class="w-full p-4 bg-white text-slate-800 shadow-md rounded-md outline-none" />
                 </div>
                 <div class="basis-3/12 ml-2">
-                    <button class="w-full p-4 bg-slate-800 text-white shadow-md rounded-md">
+                    <button
+                        onclick={
+                            let on_submit = on_submit.clone();
+                            let record = Record::new(String::from("http://localhost")); // FIXME
+                            Callback::from(move |_| (on_submit).emit(record.clone()))
+                        }
+                        class="w-full p-4 bg-slate-800 text-white shadow-md rounded-md">
                         {"Shorten"}
                     </button>
                 </div>
